@@ -1,0 +1,19 @@
+name: Run my app
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SECRET_URL: ${{ secrets.MY_SECRET_URL }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Run the app
+        run: |
+          echo "Secret URL is hidden, but available in the environment"
+          python main.py
