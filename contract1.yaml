@@ -1,0 +1,45 @@
+schedule:
+  - date: 2025-11-24
+    events:
+      - time: 12:00 AM
+        duration: 1 day
+      - time: 10:00 AM
+        duration: 2 hrs
+      - time: 10:00 AM
+        duration: 2 hrs
+      - time: 10:00 AM
+        duration: 45 min
+      - time: 10:30 AM
+        duration: 1.5 hrs
+      - time: 12:30 PM
+        duration: 1 hour
+
+  - date: 2025-11-25
+    events:
+      - time: 11:00 AM
+        duration: 1 hour
+      - time: 4:00 PM
+        duration: 1 hour
+
+  - date: 2025-11-26
+    events:
+      - time: 10:00 AM
+        duration: 45 min
+      - time: 12:00 PM
+        duration: 3 hrs
+      - time: 3:00 PM
+        duration: 30 min
+
+  - date: 2025-11-27
+    events:
+      - time: 9:45 AM
+        duration: 45 min
+
+  - date: 2025-11-28
+    events: []
+
+  - date: 2025-11-29
+    events: []
+
+  - date: 2025-11-30
+    events: []
