@@ -8,7 +8,7 @@ from main import build_event
 
 @pytest.mark.parametrize("date,events", [
     (day['date'], day['events'])
-    for day in yaml.safe_load(open('contract1.yaml'))['schedule']
+    for day in yaml.safe_load(open('tests/contract1.yaml'))['schedule']
 ])
 def test_schedule_day(date, events):
     """Test each day's schedule as a separate test case."""
@@ -24,7 +24,7 @@ def test_schedule_day(date, events):
 
 @pytest.mark.parametrize("date,events", [
     (day['date'], day['events'])
-    for day in yaml.safe_load(open('contract1.yaml'))['schedule']
+    for day in yaml.safe_load(open('tests/contract1.yaml'))['schedule']
 ])
 def test_duration(date, events):
     """Test each day's schedule as a separate test case."""
