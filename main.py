@@ -7,6 +7,7 @@ import pytz
 from playwright.sync_api import sync_playwright
 from pydantic_settings import BaseSettings
 from icalendar import Calendar, Event
+from timelength import TimeLength
 
 
 class Settings(BaseSettings):
@@ -32,14 +33,14 @@ def get_secret_url():
     return secret_url
 
 
-def build_event(selected_day: str, start_time: str) -> Event:
+def build_event(selected_day: str, start_time: str, duration: str) -> Event:
     dt_obj_start = datetime.datetime.strptime(f"{selected_day} {start_time}", '%Y-%m-%d %I:%M %p')
     aware_dtstart = budapest_tz.localize(dt_obj_start)
 
     event = Event()
     event.add('summary', 'Busy')
     event.add('dtstart', aware_dtstart)
-    event.add('dtend', aware_dtstart + datetime.timedelta(hours=1))
+    event.add('dtend', aware_dtstart + TimeLength(duration).result.delta)
     return event
 
 
@@ -83,7 +84,7 @@ def main():
                 assert len(start_times) == len(durations)
 
                 for j in range(len(start_times)):
-                    event = build_event(selected_day.strftime('%Y-%m-%d'), start_times[j])
+                    event = build_event(selected_day.strftime('%Y-%m-%d'), start_times[j], durations[j])
                     calendar.add_component(event)
                 
 
