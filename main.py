@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, date, timedelta
 import os
 import shutil
 import tempfile
@@ -33,14 +33,16 @@ def get_secret_url():
     return secret_url
 
 
-def build_event(selected_day: str, start_time: str, duration: str) -> Event:
-    dt_obj_start = datetime.datetime.strptime(f"{selected_day} {start_time}", '%Y-%m-%d %I:%M %p')
-    aware_dtstart = budapest_tz.localize(dt_obj_start)
+def build_event(selected_day: date, start_time: str, duration: str) -> Event:
+    dt_obj_time = datetime.strptime(start_time, '%I:%M %p')
+    dt_obj_merged = datetime.combine(selected_day, dt_obj_time.time())
+    dtstart = budapest_tz.localize(dt_obj_merged)
 
     event = Event()
     event.add('summary', 'Busy')
-    event.add('dtstart', aware_dtstart)
-    event.add('dtend', aware_dtstart + TimeLength(duration).result.delta)
+    event.add('dtstart', dtstart)
+    event.add('dtend', dtstart + TimeLength(duration).result.delta)
+
     return event
 
 
@@ -72,9 +74,9 @@ def main():
             page.goto(url)
             page.wait_for_load_state("networkidle")
 
-            today = datetime.date.today()
+            today = date.today()
             for i in range(7):
-                selected_day = (today + datetime.timedelta(days=i))
+                selected_day = (today + timedelta(days=i))
                 print(selected_day)
                 page.locator(f"#header_{selected_day}").click()
                 start_times = page.locator("div.KSLGX.RRC0b").all_inner_texts()
@@ -84,12 +86,8 @@ def main():
                 assert len(start_times) == len(durations)
 
                 for j in range(len(start_times)):
-                    event = build_event(selected_day.strftime('%Y-%m-%d'), start_times[j], durations[j])
+                    event = build_event(selected_day, start_times[j], durations[j])
                     calendar.add_component(event)
-                
-
-
-
 
             browser.close()
 
