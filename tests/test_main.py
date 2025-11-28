@@ -16,8 +16,9 @@ def test_schedule_day(date, events):
     calendar = Calendar()
 
     for event in events:
-        ical_event = build_event(date, event['time'], event['duration'])
-        calendar.add_component(ical_event)
+        if "day" not in event['duration']:
+            ical_event = build_event(date, event['time'], event['duration'])
+            calendar.add_component(ical_event)
 
     print(calendar.to_ical().decode("utf-8"))
 

@@ -86,8 +86,9 @@ def main():
                 assert len(start_times) == len(durations)
 
                 for j in range(len(start_times)):
-                    event = build_event(selected_day, start_times[j], durations[j])
-                    calendar.add_component(event)
+                    if "day" not in durations[j]:
+                        event = build_event(selected_day, start_times[j], durations[j])
+                        calendar.add_component(event)
 
             browser.close()
 
