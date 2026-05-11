@@ -10,13 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SECRET_URL: ${{ secrets.MY_SECRET_URL }}
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     permissions:
       # This permission is required for the action to push changes back to the repository.
       contents: write
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Docker build
         run: docker build -t usycal .
