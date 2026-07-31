@@ -4,7 +4,7 @@ import shutil
 import tempfile
 import pytz
 
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, TimeoutError
 from pydantic_settings import BaseSettings
 from icalendar import Calendar, Event
 from timelength import TimeLength
@@ -16,6 +16,7 @@ class Settings(BaseSettings):
 
 settings = Settings()
 budapest_tz = pytz.timezone("Europe/Budapest")
+FRIDAY_DAY_CODE = 4
 
 
 def get_secret_url():
@@ -75,10 +76,14 @@ def main():
             page.wait_for_load_state("networkidle")
 
             today = date.today()
-            for i in range(7):
+            days_until_next_friday = ((FRIDAY_DAY_CODE - today.weekday()) % 7) + 7
+            for i in range(days_until_next_friday + 1):
                 selected_day = (today + timedelta(days=i))
                 print(selected_day)
-                page.locator(f"#header_{selected_day}").click()
+                try:
+                    page.locator(f"#header_{selected_day}").click()
+                except TimeoutError as e:
+                    break
                 start_times = page.locator("div.KSLGX.RRC0b").all_inner_texts()
                 print(start_times)
                 durations = page.locator("div.YeV_D.RRC0b").all_inner_texts()
