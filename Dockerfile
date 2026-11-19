@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     pipx \
     wget \
     gnupg \
+    libatomic1 \
     software-properties-common \
     && rm -rf /var/lib/apt/lists/*
 
